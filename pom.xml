@@ -8,8 +8,8 @@
         <version>2.4.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>spring-boot</artifactId>
+    <groupId>cn.wbomb.www</groupId>
+    <artifactId>my_springboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot</name>
     <description>Demo project for Spring Boot</description>
