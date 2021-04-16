@@ -1,15 +1,22 @@
 package cn.wbomb.www;
 
+import cn.wbomb.www.dao.UserMapper;
+import cn.wbomb.www.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 public class HelloController {
+    @Autowired
+    private UserMapper userMapper;
 
     @RequestMapping("/")
-    public String index() {
-        return "Greetings from Spring Boot!";
+    @ResponseBody
+    public User index() {
+        return userMapper.getUserByID(1);
     }
 
     @RequestMapping("search")
