@@ -3,7 +3,6 @@ package cn.wbomb.www;
 import cn.wbomb.www.entity.User;
 import cn.wbomb.www.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
