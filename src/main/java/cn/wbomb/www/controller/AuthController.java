@@ -1,12 +1,12 @@
 package cn.wbomb.www.controller;
 
 import cn.wbomb.www.entity.User;
+import cn.wbomb.www.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,20 +20,30 @@ import java.util.Map;
 @Controller
 public class AuthController {
 
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     private final AuthenticationManager authenticationManager;
 
     @Inject
-    public AuthController(UserDetailsService userDetailsService, AuthenticationManager authenticationManager) {
-        this.userDetailsService = userDetailsService;
+    public AuthController(
+            UserService userService,
+            AuthenticationManager authenticationManager) {
+        this.userService = userService;
         this.authenticationManager = authenticationManager;
     }
 
     @GetMapping("/auth")
     @ResponseBody
     public Object auth() {
-        return new Result("ok", "", false);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User loggedInUser = userService.getUserByUsername(userName);
+        if (loggedInUser == null) {
+            return new Result("ok", "用户没有登录", false);
+        } else {
+            return new Result("ok", "", true, loggedInUser);
+        }
+
+
     }
 
     @PostMapping("auth/login")
@@ -43,17 +53,15 @@ public class AuthController {
         String password = usernameAndPassword.get("password");
         UserDetails userDetails;
         try {
-            userDetails = userDetailsService.loadUserByUsername(username);
+            userDetails = userService.loadUserByUsername(username);
         } catch (UsernameNotFoundException e) {
             return new Result("fail", "用户不存在", false);
         }
-
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, password);
         try {
             authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(token);
-            User loggedInUser = new User(1, "张三");
-            return new Result("ok", "登录成功", true, loggedInUser);
+            return new Result("ok", "登录成功", true, userService.getUserByUsername(username));
         } catch (BadCredentialsException e) {
             return new Result("fail", "密码不正确", false);
         }
