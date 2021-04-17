@@ -11,7 +11,7 @@
     <groupId>cn.wbomb.www</groupId>
     <artifactId>my_springboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-boot</name>
+    <username>spring-boot</username>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
@@ -19,7 +19,7 @@
     <repositories>
         <repository>
             <id>alimaven</id>
-            <name>aliyun maven</name>
+            <username>aliyun maven</username>
             <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
             <releases>
                 <enabled>true</enabled>
@@ -53,6 +53,10 @@
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
     </dependencies>
 
