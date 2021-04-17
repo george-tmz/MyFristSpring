@@ -16,6 +16,19 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -30,6 +43,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.200</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.23</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -49,9 +67,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>7.7.3</version>
                 <configuration>
-                    <url>jdbc:h2:file:${project.basedir}/target/test</url>
+                    <url>jdbc:mysql://localhost:3306/xdml</url>
                     <user>root</user>
-                    <password>root</password>
+                    <password>123456</password>
                 </configuration>
             </plugin>
         </plugins>
