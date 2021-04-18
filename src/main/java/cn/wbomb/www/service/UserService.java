@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.time.Instant;
 import java.util.Collections;
 
 @Service
@@ -24,7 +25,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void save(String username, String password) {
-        userMapper.save(username, bCryptPasswordEncoder.encode(password));
+        userMapper.save(username, bCryptPasswordEncoder.encode(password), Instant.now(), Instant.now());
     }
 
 

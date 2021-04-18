@@ -42,11 +42,32 @@ public class AuthController {
         } else {
             return new Result("ok", "", true, loggedInUser);
         }
-
-
     }
 
-    @PostMapping("auth/login")
+    @PostMapping("/auth/register")
+    @ResponseBody
+    public Result register(@RequestBody Map<String, String> usernameAndPassword) {
+        String username = usernameAndPassword.get("username");
+        String password = usernameAndPassword.get("password");
+        if (username == null || password == null) {
+            return new Result("fail", "username/password == null", false);
+        }
+        if (username.length() < 1 || username.length() > 15) {
+            return new Result("fail", "invalid username", false);
+        }
+        if (password.length() < 1 || password.length() > 15) {
+            return new Result("fail", "invalid password", false);
+        }
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            userService.save(username, password);
+            return new Result("ok", "success", false);
+        } else {
+            return new Result("fail", "invalid exist", false);
+        }
+    }
+
+    @PostMapping("/auth/login")
     @ResponseBody
     public Result login(@RequestBody Map<String, String> usernameAndPassword) {
         String username = usernameAndPassword.get("username");
