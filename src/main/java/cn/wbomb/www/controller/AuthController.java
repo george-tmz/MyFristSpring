@@ -34,7 +34,7 @@ public class AuthController {
 
     @GetMapping("/auth")
     @ResponseBody
-    public Object auth() {
+    public Result auth() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User loggedInUser = userService.getUserByUsername(userName);
         if (loggedInUser == null) {
@@ -85,6 +85,19 @@ public class AuthController {
             return new Result("ok", "登录成功", true, userService.getUserByUsername(username));
         } catch (BadCredentialsException e) {
             return new Result("fail", "密码不正确", false);
+        }
+    }
+
+    @GetMapping("/auth/logout")
+    @ResponseBody
+    public Result logout() {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User loggedInUser = userService.getUserByUsername(userName);
+        if (loggedInUser == null) {
+            return new Result("fail", "not login", true);
+        } else {
+            SecurityContextHolder.clearContext();
+            return new Result("ok", "logout success", false);
         }
     }
 
