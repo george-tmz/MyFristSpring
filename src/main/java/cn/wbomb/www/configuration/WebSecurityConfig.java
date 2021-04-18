@@ -17,7 +17,7 @@ import javax.inject.Inject;
 @EnableWebSecurity //spring的安全框架
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Inject
     public WebSecurityConfig(UserService userService) {
