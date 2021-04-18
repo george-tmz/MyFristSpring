@@ -2,6 +2,7 @@ package cn.wbomb.www.controller;
 
 import cn.wbomb.www.entity.User;
 import cn.wbomb.www.service.UserService;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,20 +51,20 @@ public class AuthController {
         String username = usernameAndPassword.get("username");
         String password = usernameAndPassword.get("password");
         if (username == null || password == null) {
-            return new Result("fail", "username/password == null", false);
+            return Result.failure("username/password == null");
         }
         if (username.length() < 1 || username.length() > 15) {
-            return new Result("fail", "invalid username", false);
+            return Result.failure("invalid username");
         }
         if (password.length() < 1 || password.length() > 15) {
-            return new Result("fail", "invalid password", false);
+            return Result.failure("invalid password");
         }
-        User user = userService.getUserByUsername(username);
-        if (user == null) {
+        try {
             userService.save(username, password);
             return new Result("ok", "success", false);
-        } else {
-            return new Result("fail", "invalid exist", false);
+        } catch (DuplicateKeyException e) {
+            e.printStackTrace();
+            return Result.failure("username exists");
         }
     }
 
@@ -76,7 +77,7 @@ public class AuthController {
         try {
             userDetails = userService.loadUserByUsername(username);
         } catch (UsernameNotFoundException e) {
-            return new Result("fail", "用户不存在", false);
+            return Result.failure("用户不存在");
         }
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, password);
         try {
@@ -84,7 +85,7 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(token);
             return new Result("ok", "登录成功", true, userService.getUserByUsername(username));
         } catch (BadCredentialsException e) {
-            return new Result("fail", "密码不正确", false);
+            return Result.failure("密码不正确");
         }
     }
 
@@ -94,7 +95,7 @@ public class AuthController {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User loggedInUser = userService.getUserByUsername(userName);
         if (loggedInUser == null) {
-            return new Result("fail", "not login", true);
+            return Result.failure("not login");
         } else {
             SecurityContextHolder.clearContext();
             return new Result("ok", "logout success", false);
@@ -106,6 +107,10 @@ public class AuthController {
         private final String msg;
         private final boolean isLogin;
         Object data;
+
+        private static Result failure(String message) {
+            return new Result("fail", message, false);
+        }
 
         public Result(String status, String msg, boolean isLogin) {
             this(status, msg, isLogin, null);
