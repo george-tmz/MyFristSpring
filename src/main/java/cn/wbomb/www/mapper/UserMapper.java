@@ -10,8 +10,6 @@ import java.time.Instant;
 
 @Mapper
 public interface UserMapper {
-    @Select("select * from user where id = #{id}")
-    User getUserById(@Param("id") Integer id);
 
     @Insert("INSERT INTO `user` (username, encrypted_password, created_at, updated_at)" +
             "VALUES (#{username}, #{encryptedPassword}, #{createdAt}, #{updatedAt})")

@@ -33,11 +33,6 @@ public class UserService implements UserDetailsService {
         return userMapper.findUserByUsername(username);
     }
 
-
-//    public User getUserById(int id) {
-//        return userMapper.getUserById(id);
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userMapper.findUserByUsername(username);
