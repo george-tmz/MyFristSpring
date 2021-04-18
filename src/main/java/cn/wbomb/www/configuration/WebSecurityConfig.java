@@ -11,18 +11,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.inject.Inject;
-
 @Configuration
 @EnableWebSecurity //spring的安全框架
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    UserService userService;
 
-    private final UserService userService;
-
-    @Inject
-    public WebSecurityConfig(UserService userService) {
-        this.userService = userService;
-    }
+//    @Inject
+//    public WebSecurityConfig(UserService userService) {
+//        this.userService = userService;
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
