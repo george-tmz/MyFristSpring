@@ -12,11 +12,9 @@ import java.time.Instant;
 public interface UserMapper {
 
     @Insert("INSERT INTO `user` (username, encrypted_password, created_at, updated_at)" +
-            "VALUES (#{username}, #{encryptedPassword}, #{createdAt}, #{updatedAt})")
+            "VALUES (#{username}, #{encryptedPassword},NOW(),NOW()")
     void save(@Param("username") String username,
-              @Param("encryptedPassword") String encryptedPassword,
-              @Param("createdAt") Instant createdAt,
-              @Param("updatedAt") Instant updatedAt
+              @Param("encryptedPassword") String encryptedPassword
     );
 
     @Select("select * from user where username = #{username}")
