@@ -72,6 +72,16 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.2.4</version>
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/xdml</url>
+                    <user>root</user>
+                    <password>123456</password>
+                </configuration>
+            </plugin>
+            <plugin>
                 <!-- for unit test-->
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
